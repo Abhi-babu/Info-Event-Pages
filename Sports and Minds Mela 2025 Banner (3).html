@@ -1,0 +1,177 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports and Minds Mela 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+    }
+    .banner-bg {
+      background-image: url('https://images.pexels.com/photos/46798/pexels-photo-46798.jpeg?auto=compress&cs=tinysrgb&w=1920');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-color: #141414; /* Netflix charcoal fallback */
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for Netflix-like contrast */
+    }
+    .watermark {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      color: rgba(255, 255, 255, 0.3); /* Subtle watermark */
+      font-size: 1.2rem;
+      font-weight: 500;
+      font-family: 'Bebas Neue', sans-serif;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      transform: rotate(-10deg);
+      pointer-events: none;
+    }
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+    .btn-netflix {
+      background-color: #E50914; /* Netflix red */
+      color: #ffffff;
+      font-weight: 700;
+      font-family: 'Roboto', sans-serif;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn-netflix:hover {
+      background-color: #c40812;
+      transform: scale(1.05);
+    }
+    .link-netflix {
+      color: #E50914; /* Netflix red for links */
+      transition: color 0.2s ease;
+    }
+    .link-netflix:hover {
+      color: #c40812;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeIn 0.8s ease-out;
+    }
+    h1, h2 {
+      font-family: 'Bebas Neue', sans-serif;
+    }
+  </style>
+</head>
+<body class="banner-bg text-gray-100">
+  <div class="watermark">स्पोर्ट्स एंड माइंड्स मेला 2025</div>
+  <div class="max-w-4xl w-full bg-gray-900 bg-opacity-80 backdrop-blur-lg overlay rounded-lg shadow-2xl p-6 md:p-8 fade-in">
+    <h1 class="text-4xl md:text-5xl font-bold text-center mb-6 text-white">🎉 स्पोर्ट्स एंड माइंड्स मेला 2025 🎉</h1>
+    <p class="text-lg text-center mb-8 text-gray-300">युवा स्वास्थ्य और शिक्षा को बढ़ावा देने की एक शानदार पहल</p>
+    
+    <div class="text-center mb-8 card bg-gray-800 bg-opacity-70 p-6 rounded-lg">
+      <p class="text-base"><strong>आयोजक:</strong> Code Ninjas - एवं उनकी टीम</p>
+      <p class="text-base"><strong>तारीख:</strong> जुलाई 2025 (सटीक दिन की घोषणा जल्द)</p>
+      <p class="text-base"><strong>स्थान:</strong> आयोजन के समय सूचित किया जाएगा</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Sports Competitions -->
+      <div class="card bg-gray-800 bg-opacity-70 p-6 rounded-lg">
+        <h2 class="text-2xl font-semibold mb-4 text-white">खेल प्रतियोगिताएँ</h2>
+        <ul class="list-disc list-inside text-base text-gray-300">
+          <li>क्रिकेट: केवल पुरुष स्टाफ सदस्य (कोचिंग/स्कूल)</li>
+          <li>बैडमिंटन: पुरुष और महिला - दोनों के लिए खुली प्रतियोगिता</li>
+          <li>वॉलीबॉल: केवल पुरुष स्टाफ के लिए</li>
+        </ul>
+      </div>
+      <!-- Quiz Competition -->
+      <div class="card bg-gray-800 bg-opacity-70 p-6 rounded-lg">
+        <h2 class="text-2xl font-semibold mb-4 text-white">ज्ञान प्रतियोगिता (क्विज)</h2>
+        <p class="text-base text-gray-300">22 वर्ष से कम आयु के सभी युवाओं के लिए खुला मंच।</p>
+        <p class="text-base font-semibold mt-2 text-gray-300">अगर आपके पास ज्ञान है, तो मंच आपका इंतजार कर रहा है!</p>
+      </div>
+    </div>
+
+    <div class="text-center mb-8 card bg-gray-800 bg-opacity-70 p-6 rounded-lg">
+      <p class="text-base font-semibold text-white">विशेष सरप्राइज उपहार और सभी प्रतिभागियों के लिए प्रमाण पत्र!</p>
+      <p class="text-base text-gray-300">आपका हर प्रयास मिलेगा पहचान!</p>
+    </div>
+
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-semibold mb-4 text-white">पंजीकरण</h2>
+      <p class="text-base text-gray-300 mb-4">पंजीकरण के लिए कृपया नीचे दिए गए बटन पर क्लिक करें:</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYGOSXSzl_CnUpDNHafCS2-Ty2LzFHRg8RxHw-yBWDzuvPjA/viewform?usp=sharing&ouid=100632470750451030089" target="_blank" class="btn-netflix inline-block py-3 px-6 rounded-md">Google Form पंजीकरण</a>
+    </div>
+
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-semibold mb-4 text-white">मुख्य अतिथि</h2>
+      <p class="text-base text-gray-300">श्री सत्येन्द्र सिंह (मुखिया)</p>
+      <p class="text-base text-gray-300">उद्घाटन समारोह में मुख्य अतिथि के रूप में कार्यक्रम की शोभा बढ़ाएंगे।</p>
+      <p class="text-base text-gray-300">अन्य विशिष्ट अतिथियों की जानकारी शीघ्र साझा की जाएगी।</p>
+    </div>
+
+    <div class="text-center mb-8 card bg-gray-800 bg-opacity-70 p-6 rounded-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-white">संपर्क करें</h2>
+      <p class="text-base text-gray-300"><strong>संपर्क व्यक्ति:</strong> ER Abhishek</p>
+      <p class="text-base text-gray-300"><strong>फोन:</strong> <a href="tel:+916299962408" class="link-netflix underline">6299962408</a></p>
+      <p class="text-base text-gray-300"><strong>ईमेल:</strong> <a href="mailto:abhi703380@gmail.com" class="link-netflix underline">abhi703380@gmail.com</a></p>
+    </div>
+
+    <div class="text-center mt-8">
+      <p class="text-2xl font-bold text-white">आइए, खेलें! सीखें! जीतें!</p>
+    </div>
+  </div>
+</body>
+</html>
